@@ -41,6 +41,7 @@
   align-items: center;
 }
 
+/* MESSAGE FIELD */
 .message {
   margin: 1rem 0;
   width: 100%;
@@ -62,4 +63,36 @@
   font-size: 1rem;
   margin-bottom: 0.5rem;
   color: rgba(255,255,255,.89);
+}
+
+.message-send-box-wrapper {
+  display: flex;
+  width: 100%;
+  background: white;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  overflow: hidden;
+  align-items: center;
+}
+
+/* INPUT FIELD */
+.user-name {
+  display: inline-flex;
+  justify-content: center;
+  align-content: center;
+  padding: 0 1rem;
+}
+
+.input-field {
+  display: inline-flex;
+  flex: 1 1 100%;
+  margin-left: 8px;
+  border-left: 1px solid rgba(0,0,0,.64);
+}
+
+textarea {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 100%;
 }
