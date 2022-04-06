@@ -4,10 +4,10 @@ export const InputBox = (props) => {
     return (
         <div className="message-send-box-wrapper">
             <div className="user-name">
-                User123
+                { props.currentUser ?? 'unknown user'}
             </div>
             <div className="input-field">
-                <textarea placeholder="Type your message here .." />
+                <textarea maxLength="100" placeholder="Type your message here .." />
             </div>
         </div>
     )
