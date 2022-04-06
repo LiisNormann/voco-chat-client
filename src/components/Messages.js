@@ -1,11 +1,13 @@
 import React from "react";
 
-export const MessageItem = (props) => {
+export const MessageItem = ({ key, text, senderId, timestamp, currentUser }) => {
+    const cls = currentUser === senderId ? " my-message" : ""
     return (
-        <div className="message">
-            <div className="message-content">
-                <p className="message-text">ff</p>
+        <div key={key} className="message">
+            <div className={ "message-content"+ cls }>
+                <p className="message-text">{text}</p>
                 <span className="message-username">
+                    {senderId} • {timestamp}
                 </span>
             </div>
         </div>
