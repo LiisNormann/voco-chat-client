@@ -6,11 +6,31 @@ import Heading from './components/Heading'
 import {InputBox} from "./components/InputBox";
 import Login from "./components/Login";
 
+const ws = new WebSocket('ws://localhost:8000/');
+
 function App() {
     const [isLogged, setIsLogged] = React.useState(false);
     const [currentUser, setCurrentUser] = React.useState(false);
     const [newMessage, setNewMessage] = React.useState('');
     const [messages, setMessages] = React.useState([]);
+
+    ws.onopen = function() {
+        console.log('WebSocket Client Connected');
+        ws.send('Hi this is web client.');
+    };
+
+    ws.onmessage = function(e) {
+        console.log("Received: '" + e.data + "'");
+    };
+
+    function componentWillMount() {
+        client.onopen = () => {
+            console.log('WebSocket Client Connected');
+        };
+        client.onmessage = (message) => {
+            console.log(message);
+        };
+    }
 
     const addNewMessage = (  ) => {
         setMessages([
