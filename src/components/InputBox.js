@@ -21,6 +21,7 @@ export const InputBox = (props) => {
             </div>
             <div className="input-field">
                 <textarea placeholder="Type your message here .."
+                       type="text"
                           value={props.currentMessage}
                           onChange={handleChange}
                 />

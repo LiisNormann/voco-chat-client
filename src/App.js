@@ -1,18 +1,46 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import MessageList from './components/MessageList'
 import Heading from './components/Heading'
 import {InputBox} from "./components/InputBox";
 import Login from "./components/Login";
+import {connectToServer} from "./socket-service.ts";
+
+/*const ws = new WebSocket('ws://localhost:4000/');*/
 
 function App() {
+    useEffect(() => {
+        connectToServer()
+            .then((message) => {
+                console.log(message);
+            });
+    }, []);
+
+    /*ws.onopen = function() {
+        console.log('WebSocket Client Connected');
+        ws.send('Hi this is web client.');
+    };
+
+    ws.onmessage = function(e) {
+        console.log("Received: '" + e.data + "'");
+    };*/
+
+    /*function componentWillMount() {
+        client.onopen = () => {
+            console.log('WebSocket Client Connected');
+        };
+        client.onmessage = (message) => {
+            console.log(message);
+        };
+    }*/
+
     const [isLogged, setIsLogged] = React.useState(false);
     const [currentUser, setCurrentUser] = React.useState(false);
     const [newMessage, setNewMessage] = React.useState('');
     const [messages, setMessages] = React.useState([]);
 
-    const addNewMessage = (  ) => {
+    const addNewMessage = () => {
         setMessages([
             ...messages,
             {
@@ -20,36 +48,36 @@ function App() {
                 text: newMessage,
                 timestamp: new Date().toLocaleDateString('et-ee')
             }
-        ] )
+        ])
     }
 
 
-    React.useEffect( () => {
+    React.useEffect(() => {
         if (currentUser && currentUser !== "") {
             setIsLogged(true)
         } else {
             setIsLogged(false)
         }
-    }, [ currentUser ]);
+    }, [currentUser]);
 
-    React.useEffect( () => {
+    React.useEffect(() => {
         console.info('messages got updated: ', messages)
-    }, [ messages ]);
+    }, [messages]);
 
 
-    return(
+    return (
         <div className="App">
-            <Heading />
-            { isLogged ? (
+            <Heading/>
+            {isLogged ? (
                     <form className="chat-wrapper">
                         <MessageList
                             messages={messages}
                             currentUser={currentUser}
                         />
                         <InputBox
-                            currentUser={ currentUser }
-                            currentMessage={ newMessage }
-                            cb={ setNewMessage }
+                            currentUser={currentUser}
+                            currentMessage={newMessage}
+                            cb={setNewMessage}
                         />
                         <div className="btn-wrapper">
                             <button type="button"
@@ -64,7 +92,7 @@ function App() {
                     </form>
                 )
                 : (
-                    <Login currentUser={currentUser} cb={ setCurrentUser } />
+                    <Login currentUser={currentUser} cb={setCurrentUser}/>
                 )
             }
         </div>
