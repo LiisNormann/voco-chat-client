@@ -30,7 +30,7 @@
   align-items: center;
   min-width: 900px;
   max-height: 670px;
-  overflow-y: scroll;
+  overflow: scroll;
 }
 
 .chat-wrapper {
