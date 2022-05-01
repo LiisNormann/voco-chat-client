@@ -6,6 +6,7 @@ import Heading from './components/Heading'
 import {InputBox} from "./components/InputBox";
 import Login from "./components/Login";
 
+//global websocket connection, connects when instantiated
 const ws = new WebSocket('ws://localhost:8000/');
 
 function App() {
@@ -16,35 +17,64 @@ function App() {
 
     ws.onopen = function() {
         console.log('WebSocket Client Connected');
-        ws.send('Hi this is web client.');
     };
 
+    //handling received messages
     ws.onmessage = function(e) {
-        console.log("Received: '" + e.data + "'");
-    };
+        //data comes in as a json string
+        let msgs = JSON.parse(e.data);
+        let incoming = [];
 
-    function componentWillMount() {
-        client.onopen = () => {
-            console.log('WebSocket Client Connected');
-        };
-        client.onmessage = (message) => {
-            console.log(message);
-        };
-    }
+        //for each incoming message, do ..
+        for(let index in msgs) {
+            let message = msgs[index];
+            let msg = '';
+            let sender = '';
+            let date = null;
 
-    const addNewMessage = (  ) => {
+            switch(message.action) {
+                case 'disconnect':
+                    msg = 'Somebody went bye-bye...';
+                    sender = 'Server';
+                    date = new Date(message.created);
+                    break;
+                case 'login':
+                    msg = 'Say hello to my little friend... ' + message.user;
+                    sender = 'Server';
+                    date = new Date(message.created);
+                    break;
+                case 'message':
+                    sender = message.user;
+                    msg = message.message;
+                    date = new Date(message.created);
+                    break;
+                default:
+                    break;
+            }
+
+            incoming.push({
+                senderId: sender,
+                text: msg,
+                timestamp: date.toLocaleDateString('et-ee') + ' - ' + date.toLocaleTimeString('et-ee')
+            });
+        }
+
         setMessages([
             ...messages,
-            {
-                senderId: currentUser,
-                text: newMessage,
-                timestamp: new Date().toLocaleDateString('et-ee')
-            }
-        ] )
+            ...incoming
+        ])
+    };
+
+    const addNewMessage = (  ) => {
+        ws.send(JSON.stringify({user: currentUser, action: 'message', message: newMessage}));
     }
 
+    React.useEffect(() => {
+        if(isLogged)
+            ws.send(JSON.stringify({user: currentUser, action: 'login'}));
+    }, [isLogged]);
 
-    React.useEffect( () => {
+    React.useEffect(() => {
         if (currentUser && currentUser !== "") {
             setIsLogged(true)
         } else {
@@ -52,10 +82,25 @@ function App() {
         }
     }, [ currentUser ]);
 
-    React.useEffect( () => {
-        console.info('messages got updated: ', messages)
-    }, [ messages ]);
+    React.useEffect(() => {
+        var msgs = document.getElementsByClassName('message');
+        var height = 0;
+        for(var index in msgs) {
+            var h = msgs[index].clientHeight;
+            if(h) {
+                height += h;
+            }
+        }
+        var chat = document.getElementById("Chat-Window");
+        if(chat) {
+            if(height < 670) {
+                height = 670;
+            }
 
+            chat.style.height = height + 'px';
+            chat.scrollTop = chat.scrollHeight;
+        }
+    }, [messages]);
 
     return(
         <div className="App">

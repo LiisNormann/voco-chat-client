@@ -16,7 +16,7 @@
     "react-scripts": "5.0.0",
     "stack": "^0.1.0",
     "web-vitals": "^2.1.4",
-    "websocket": "^1.0.34"
+    "net": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

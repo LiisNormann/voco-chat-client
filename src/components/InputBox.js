@@ -20,8 +20,7 @@ export const InputBox = (props) => {
                 { props.currentUser ?? 'unknown user'}
             </div>
             <div className="input-field">
-                <textarea placeholder="Type your message here .."
-                       type="text"
+                <textarea maxLength="200" placeholder="Type your message here .."
                           value={props.currentMessage}
                           onChange={handleChange}
                 />
