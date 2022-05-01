@@ -23,20 +23,18 @@
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   background-color: #20242c;
-  display: flex;
   flex-direction: column;
   flex-basis: 75%;
   justify-content: end;
   align-items: center;
   min-width: 900px;
   max-height: 670px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .chat-wrapper {
   flex-direction: column;
   flex: 1;
-  display: flex;
   padding-bottom: 48px;
   justify-content: center;
   align-items: center;
